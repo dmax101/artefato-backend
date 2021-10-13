@@ -1,0 +1,10 @@
+version: '3.3'
+services:
+  neo4j:
+    image: 'neo4j:3.0'
+    ports:
+      - '7474:7474'
+      - '7687:7687'
+    volumes:
+      - '$HOME/neo4j/data:/data'
+    image: neo4j
