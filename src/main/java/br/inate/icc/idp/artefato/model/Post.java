@@ -13,7 +13,6 @@ public class Post {
     private BigInteger share;
     private Boolean isArchived;
 
-
     public Post() {
       // TODO document why this constructor is empty
     }
