@@ -4,87 +4,34 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.neo4j.core.schema.Id;
+import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.neo4j.core.schema.Relationship;
+
+import lombok.Data;
+
+@Data
+@Node
 public class User {
 
+    // @NonNull
+    // @NotNull(message = "Id must to be valid UUID")
+    @Id
     private UUID id;
+    // @NotNull(message = "You have to provide a name")
     private String name;
+    // @NotNull(message = "You have to provide an e-mail")
+    private String email;
     private String bio;
     private Boolean isCrafter;
     private BigDecimal wallet;
+    @Relationship(type = "CRAFTED", direction = Relationship.Direction.OUTGOING)
     private List<Product> product;
+    @Relationship(type = "POSTED", direction = Relationship.Direction.OUTGOING)
     private List<Post> posts;
-    private List<Post> timeline;
-
-    public User() {
-      // TODO document why this constructor is empty
-    }
-
-    public UUID getId() {
-        return this.id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getBio() {
-        return this.bio;
-    }
-
-    public void setBio(String bio) {
-        this.bio = bio;
-    }
-
-    public Boolean isIsCrafter() {
-        return this.isCrafter;
-    }
-
-    public Boolean getIsCrafter() {
-        return this.isCrafter;
-    }
-
-    public void setIsCrafter(Boolean isCrafter) {
-        this.isCrafter = isCrafter;
-    }
-
-    public BigDecimal getWallet() {
-        return this.wallet;
-    }
-
-    public void setWallet(BigDecimal wallet) {
-        this.wallet = wallet;
-    }
-
-    public List<Product> getProduct() {
-        return this.product;
-    }
-
-    public void setProduct(List<Product> product) {
-        this.product = product;
-    }
-
-    public List<Post> getPosts() {
-        return this.posts;
-    }
-
-    public void setPosts(List<Post> posts) {
-        this.posts = posts;
-    }
-
-    public List<Post> getTimeline() {
-        return this.timeline;
-    }
-
-    public void setTimeline(List<Post> timeline) {
-        this.timeline = timeline;
-    }    
+    @Relationship(type = "LIKED", direction = Relationship.Direction.OUTGOING)
+    private List<Post> liked;
+    @Relationship(type = "FOLLOW", direction = Relationship.Direction.OUTGOING)
+    private List<User> follow;
 
 }
