@@ -6,5 +6,5 @@ services:
       - '7474:7474'
       - '7687:7687'
     volumes:
-      - '$HOME/neo4j/data:/data'
+      - '/home/dmax/projects/neo4j/data:/data'
     image: neo4j
