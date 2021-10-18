@@ -17,6 +17,7 @@ public class PostService {
     PostRepository postRepository;
 
     public Collection<PostEntity> getAllPosts() {
+        log.info("Getting all posts");
         return postRepository.getAllPosts();
     }
     
