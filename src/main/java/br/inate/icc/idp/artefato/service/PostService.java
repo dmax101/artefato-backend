@@ -5,16 +5,18 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.inate.icc.idp.artefato.model.Post;
+import br.inate.icc.idp.artefato.model.PostEntity;
 import br.inate.icc.idp.artefato.repository.PostRepository;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 public class PostService {
 
     @Autowired
     PostRepository postRepository;
 
-    public Collection<Post> getAllPosts() {
+    public Collection<PostEntity> getAllPosts() {
         return postRepository.getAllPosts();
     }
     

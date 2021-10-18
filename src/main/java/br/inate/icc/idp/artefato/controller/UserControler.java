@@ -8,13 +8,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.inate.icc.idp.artefato.model.User;
+import br.inate.icc.idp.artefato.model.UserEntity;
 import br.inate.icc.idp.artefato.repository.UserRepository;
 import br.inate.icc.idp.artefato.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/user")
 @Cacheable("UserCache")
+@Slf4j
 public class UserControler {
 
     @Autowired
@@ -24,7 +26,8 @@ public class UserControler {
     UserRepository userRepository;
 
     @GetMapping
-    public Collection<User> getAllUsers() {
+    public Collection<UserEntity> getAllUsers() {
+        log.info("Teste");
         return userRepository.getAllUsers();
     }
 

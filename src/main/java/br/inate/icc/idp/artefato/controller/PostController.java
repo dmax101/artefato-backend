@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.inate.icc.idp.artefato.model.Post;
+import br.inate.icc.idp.artefato.model.PostEntity;
 import br.inate.icc.idp.artefato.service.PostService;
 
 @RestController
@@ -18,7 +18,7 @@ public class PostController {
     PostService postService;
 
     @GetMapping
-    public Collection<Post> getAllPosts() {
+    public Collection<PostEntity> getAllPosts() {
         return postService.getAllPosts();
     }
     

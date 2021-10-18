@@ -72,23 +72,23 @@ CREATE (Post03:Post {
 })
 
 CREATE 
-    (Danilo)-[:CRAFTED]->(Sword),
-    (Danilo)-[:CRAFTED]->(Shield),
-    (Sofia)-[:CRAFTED]->(Paint),
-    (Danilo)-[:POSTED]->(Post01),
-    (Danilo)-[:POSTED]->(Post02),
-    (Sofia)-[:POSTED]->(Post03),
-    (Danilo)-[:FOLLOW]->(Sofia),
-    (Sofia)-[:FOLLOW]->(Danilo),
-    (Flavia)-[:FOLLOW]->(Sofia),
-    (Flavia)-[:FOLLOW]->(Danilo),
-    (Flavia)-[:LIKED]->(Post03),
-    (Flavia)-[:LIKED]->(Post02),
-    (Sofia)-[:LIKED]->(Post01),
-    (Danilo)-[:LIKED]->(Post03),
-    (Post01)-[:ABOUT]->(Sword),
-    (Post02)-[:ABOUT]->(Shield),
-    (Post03)-[:ABOUT]->(Paint)
+    (Danilo)-[:CRAFTED{creation: datetime({timezone: 'America/Sao Paulo'})}]->(Sword),
+    (Danilo)-[:CRAFTED{creation: datetime({timezone: 'America/Sao Paulo'})}]->(Shield),
+    (Sofia)-[:CRAFTED{creation: datetime({timezone: 'America/Sao Paulo'})}]->(Paint),
+    (Danilo)-[:POSTED{creation: datetime({timezone: 'America/Sao Paulo'})}]->(Post01),
+    (Danilo)-[:POSTED{creation: datetime({timezone: 'America/Sao Paulo'})}]->(Post02),
+    (Sofia)-[:POSTED{creation: datetime({timezone: 'America/Sao Paulo'})}]->(Post03),
+    (Danilo)-[:FOLLOW{creation: datetime({timezone: 'America/Sao Paulo'})}]->(Sofia),
+    (Sofia)-[:FOLLOW{creation: datetime({timezone: 'America/Sao Paulo'})}]->(Danilo),
+    (Flavia)-[:FOLLOW{creation: datetime({timezone: 'America/Sao Paulo'})}]->(Sofia),
+    (Flavia)-[:FOLLOW{creation: datetime({timezone: 'America/Sao Paulo'})}]->(Danilo),
+    (Flavia)-[:LIKED{creation: datetime({timezone: 'America/Sao Paulo'})}]->(Post03),
+    (Flavia)-[:LIKED{creation: datetime({timezone: 'America/Sao Paulo'})}]->(Post02),
+    (Sofia)-[:LIKED{creation: datetime({timezone: 'America/Sao Paulo'})}]->(Post01),
+    (Danilo)-[:LIKED{creation: datetime({timezone: 'America/Sao Paulo'})}]->(Post03),
+    (Post01)-[:ABOUT{creation: datetime({timezone: 'America/Sao Paulo'})}]->(Sword),
+    (Post02)-[:ABOUT{creation: datetime({timezone: 'America/Sao Paulo'})}]->(Shield),
+    (Post03)-[:ABOUT{creation: datetime({timezone: 'America/Sao Paulo'})}]->(Paint)
 
 ;
 

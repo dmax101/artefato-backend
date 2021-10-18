@@ -9,23 +9,23 @@ import org.springframework.data.neo4j.core.schema.Node;
 import lombok.Data;
 
 @Data
-@Node
-public class Post {
+@Node("Post")
+public class PostEntity {
 
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     private final Long id;
+    
     private final String title;
     private final String description;
     private final BigInteger like;
     private final BigInteger share;
     private final Boolean isArchived;
 
-    public Post withId(Long id) {
+    public PostEntity withId(Long id) {
         if (this.id.equals(id)) {
             return this;
         } else {
-            return new Post(id, this.title, this.description, this.like, this.share, this.isArchived);
+            return new PostEntity(id, this.title, this.description, this.like, this.share, this.isArchived);
         }
     }
 

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.inate.icc.idp.artefato.model.Product;
+import br.inate.icc.idp.artefato.model.ProductEntity;
 import br.inate.icc.idp.artefato.service.ProductService;
 
 @RestController
@@ -18,7 +18,7 @@ public class ProductController {
     ProductService productService;
 
     @GetMapping
-    public Collection<Product> getAllProducts() {
-        return productService.getAllProducts();
+    public Collection<ProductEntity> getAllProducts() {
+        return productService.getProductCraftedBy("Danilo");
     }
 }

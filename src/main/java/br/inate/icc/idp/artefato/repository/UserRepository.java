@@ -8,23 +8,23 @@ import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Repository;
 
-import br.inate.icc.idp.artefato.model.User;
+import br.inate.icc.idp.artefato.model.UserEntity;
 
 @Repository
-public interface UserRepository extends Neo4jRepository<User, Long> {
+public interface UserRepository extends Neo4jRepository<UserEntity, Long> {
 
     @Async
     @Query("MATCH (u:User) RETURN u")
-    Collection<User> getAllUsers();
+    Collection<UserEntity> getAllUsers();
     
     @Async
     @Query("MATCH (:User{name: 'Danilo'})-[:FOLLOW]->(u:User) RETURN u")
-    Collection<User> getAllUserFollowed();
+    Collection<UserEntity> getAllUserFollowed();
     
     @Async
-    Optional<User> findByNameIgnoreCase(String string);
+    Optional<UserEntity> findByNameIgnoreCase(String string);
     
     @Async
-    Optional<User> findById(Long id);
+    Optional<UserEntity> findById(Long id);
     
 }

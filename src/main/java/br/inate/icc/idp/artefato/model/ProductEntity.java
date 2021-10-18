@@ -12,7 +12,7 @@ import lombok.Data;
 
 @Data
 @Node("Product")
-public class Product {
+public class ProductEntity {
 
     @Id
     @GeneratedValue
@@ -24,11 +24,11 @@ public class Product {
     private final Boolean isAvailable;
     private final List<URL> imageURL;
 
-    public Product withId(Long id) {
+    public ProductEntity withId(Long id) {
         if (this.id.equals(id)) {
             return this;
         } else {
-            return new Product(id, this.name, this.description, this.price, this.isAvailable, this.imageURL);
+            return new ProductEntity(id, this.name, this.description, this.price, this.isAvailable, this.imageURL);
         }
     }
 

@@ -13,7 +13,7 @@ import lombok.Data;
 
 @Data
 @Node("User")
-public class User {
+public class UserEntity {
 
     @Id
     @GeneratedValue
@@ -25,19 +25,19 @@ public class User {
     private final Boolean isCrafter;
     private final BigDecimal wallet;
     @Relationship(type = "CRAFTED", direction = Direction.OUTGOING)
-    private List<Product> product;
+    private List<ProductEntity> product;
     @Relationship(type = "POSTED", direction = Direction.OUTGOING)
-    private List<Post> posts;
+    private List<PostEntity> posts;
     @Relationship(type = "LIKED", direction = Direction.OUTGOING)
-    private List<Post> liked;
+    private List<PostEntity> liked;
     @Relationship(type = "FOLLOW", direction = Direction.OUTGOING)
-    private List<User> follow;
+    private List<FollowRelationship> follow;
 
-    public User withId(Long id) {
+    public UserEntity withId(Long id) {
         if (this.id.equals(id)) {
             return this;
         } else {
-            return new User(id, this.name, this.email, this.bio, this.isCrafter, this.wallet);
+            return new UserEntity(id, this.name, this.email, this.bio, this.isCrafter, this.wallet);
         }
     }
 
