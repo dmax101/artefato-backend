@@ -8,7 +8,7 @@
 		<version>2.5.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>br.inate.icc.idp</groupId>
+	<groupId>br.inatel.icc.idp</groupId>
 	<artifactId>artefato</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>artefato</name>
