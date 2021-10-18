@@ -1,0 +1,40 @@
+= Artefato backend
+
+This is the backend of Artefato application.
+
+[NOTE]
+This project use Spring Boot and Neo4j database to create an social network
+
+== The Stack
+These are the components of our Web Application:
+
+* Application Type:         Spring-Boot Java Web Application
+* Web framework:            Spring-Boot enabled Spring-WebMVC
+* Persistence Access:       Spring-Data-Neo4j
+* Database:                 Neo4j-Server
+
+== Configuration options
+
+[%header,cols=2*]
+|===
+|Environment variable name
+|Default value (or N/A)
+
+|PORT
+|8080
+
+|NEO4J_URI
+|bolt://localhost:7687
+
+|NEO4J_USER
+|neo4j
+
+|NEO4J_PASSWORD
+|toor
+
+|NEO4J_DATABASE
+|neo4j
+
+|NEO4J_VERSION
+|	4.3.5
+|===
