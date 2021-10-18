@@ -27,7 +27,7 @@ public class UserControler {
 
     @GetMapping
     public Collection<UserEntity> getAllUsers() {
-        log.info("Teste");
+        log.info("Get all users");
         return userRepository.getAllUsers();
     }
 
