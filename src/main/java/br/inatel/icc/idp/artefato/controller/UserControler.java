@@ -3,7 +3,7 @@ package br.inatel.icc.idp.artefato.controller;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -45,13 +45,14 @@ public class UserControler {
     @PostMapping
     public ResponseEntity<?> createNewUser(@RequestBody UserDTO userDTO, UriComponentsBuilder uriBuilder) {
 
-        UserDTO responseUserDTO = userService.saveToDatabase(userDTO);
+        log.info("Object to send to Database: " + userDTO.toString());
 
-        if (responseUserDTO != null) {
+        Optional<UserEntity> responseUserEntity = userService.saveUserToDatabase(userDTO);
 
-            URI uri = uriBuilder.path("/users/{id}").buildAndExpand(userDTO.getId()).toUri();
+        if (responseUserEntity.isPresent()) {
+            URI uri = uriBuilder.path("/users/{id}").buildAndExpand(responseUserEntity.get().getId()).toUri();
 
-            return ResponseEntity.created(uri).body(responseUserDTO);
+            return ResponseEntity.created(uri).body(UserDTO.convertToDTO(responseUserEntity.get()));
         }
 
         return ResponseEntity.badRequest().body(

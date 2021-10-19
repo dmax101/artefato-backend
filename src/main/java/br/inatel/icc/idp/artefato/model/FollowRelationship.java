@@ -10,7 +10,8 @@ import org.springframework.data.neo4j.core.schema.TargetNode;
 @RelationshipProperties
 public class FollowRelationship {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
     private final List<String> followers;
@@ -26,5 +27,5 @@ public class FollowRelationship {
     public List<String> getFollowers() {
         return followers;
     }
-    
+
 }

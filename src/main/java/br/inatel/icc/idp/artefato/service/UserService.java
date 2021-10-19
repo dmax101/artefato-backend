@@ -1,6 +1,7 @@
 package br.inatel.icc.idp.artefato.service;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,20 +23,11 @@ public class UserService {
         return userRepository.getAllUsers();
     }
 
-    public UserDTO saveToDatabase(UserDTO userDTO) {
+    public Optional<UserEntity> saveUserToDatabase(UserDTO userDTO) {
 
-        UserEntity userEntity = userDTO.convetToEntity();
+        return userRepository.saveUserToDatabase(userDTO.getName(), userDTO.getEmail(), userDTO.getBio(),
+                userDTO.getIsCrafter(), userDTO.getWallet());
 
-        try {
-            log.info("Saving user in database");
-            UserEntity response = userRepository.save(userEntity);
-
-            return UserDTO.convertToDTO(response);
-        } catch (Exception e) {
-            log.error("It was not possible to save in database", e);
-            
-            return null;
-        }
     }
 
 }
