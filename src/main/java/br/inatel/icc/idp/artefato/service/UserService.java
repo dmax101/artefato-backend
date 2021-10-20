@@ -35,14 +35,6 @@ public class UserService {
 
     }
 
-    // public Optional<UserEntity> saveUserToDatabase(UserDTO userDTO) {
-
-    // return userRepository.saveUserToDatabase(userDTO.getName(),
-    // userDTO.getEmail(), userDTO.getBio(),
-    // userDTO.getIsCrafter(), userDTO.getWallet());
-
-    // }
-
     public Optional<FollowRelationship> createNewRelationship(UserDTO follower, UserDTO followed) {
 
         Optional<UserEntity> u1 = userRepository.getUser(follower.getName(), follower.getEmail());

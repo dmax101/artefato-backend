@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -26,7 +25,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -68,7 +66,7 @@ public class UserController {
                     name, email);
 
             if (responseUserEntity.isPresent()) {
-                return ResponseEntity.ok(UserDTO.convertToDTO(responseUserEntity.get()));
+                return ResponseEntity.ok(Arrays.asList(UserDTO.convertToDTO(responseUserEntity.get())));
             } else {
                 return ResponseEntity.ok(Arrays.asList());
             }
@@ -78,7 +76,7 @@ public class UserController {
             Optional<UserEntity> responseUserEntity = userRepository.getUserById(UUID.fromString(id));
 
             if (responseUserEntity.isPresent()) {
-                return ResponseEntity.ok(UserDTO.convertToDTO(responseUserEntity.get()));
+                return ResponseEntity.ok(Arrays.asList(UserDTO.convertToDTO(responseUserEntity.get())));
             } else {
                 return ResponseEntity.ok(Arrays.asList());
             }
@@ -87,7 +85,7 @@ public class UserController {
             Optional<UserEntity> responseUserEntity = userRepository.getUser(name, email);
 
             if (responseUserEntity.isPresent()) {
-                return ResponseEntity.ok(UserDTO.convertToDTO(responseUserEntity.get()));
+                return ResponseEntity.ok(Arrays.asList(UserDTO.convertToDTO(responseUserEntity.get())));
             } else {
                 return ResponseEntity.ok(Arrays.asList());
             }
@@ -103,11 +101,23 @@ public class UserController {
             Optional<UserEntity> responseUserEntity = userRepository.getUserByEmail(email);
 
             if (responseUserEntity.isPresent()) {
-                return ResponseEntity.ok(UserDTO.convertToDTO(responseUserEntity.get()));
+                return ResponseEntity.ok(Arrays.asList(UserDTO.convertToDTO(responseUserEntity.get())));
             } else {
                 return ResponseEntity.ok(Arrays.asList());
             }
         }
+
+    }
+
+    @PostMapping
+    public ResponseEntity<?> getUser(@RequestBody UserDTO user) {
+        Optional<UserEntity> userEntity = userRepository.getUser(user.getName(), user.getEmail());
+
+        if (userEntity.isPresent()) {
+            return ResponseEntity.ok(Arrays.asList(userEntity.get()));
+        }
+        return ResponseEntity.ok(Arrays.asList());
+
     }
 
     @GetMapping("/user/{id}")
@@ -117,7 +127,7 @@ public class UserController {
 
         if (responseUserEntity.isPresent()) {
 
-            return ResponseEntity.ok(UserDTO.convertToDTO(responseUserEntity.get()));
+            return ResponseEntity.ok(Arrays.asList(UserDTO.convertToDTO(responseUserEntity.get())));
 
         }
 
@@ -135,22 +145,11 @@ public class UserController {
         if (responseUserEntity.isPresent()) {
             URI uri = uriBuilder.path("/user/{id}").buildAndExpand(responseUserEntity.get().getId()).toUri();
 
-            return ResponseEntity.created(uri).body(UserDTO.convertToDTO(responseUserEntity.get()));
+            return ResponseEntity.created(uri).body(Arrays.asList(UserDTO.convertToDTO(responseUserEntity.get())));
         }
 
         return ResponseEntity.badRequest().body(
                 new ErrorDTO(HttpStatus.BAD_REQUEST.toString(), "Something wrong is not right!", Arrays.asList()));
-
-    }
-
-    @PostMapping
-    public ResponseEntity<?> getUser(@RequestBody UserDTO user) {
-        Optional<UserEntity> userEntity = userRepository.getUser(user.getName(), user.getEmail());
-
-        if (userEntity.isPresent()) {
-            return ResponseEntity.ok(userEntity.get());
-        }
-        return ResponseEntity.ok(Arrays.asList());
 
     }
 
@@ -160,7 +159,9 @@ public class UserController {
 
             return ResponseEntity.badRequest().body(new BasicMessageDTO(HttpStatus.BAD_REQUEST.toString(),
                     "You have to provide the follower and followed users"));
+
         } else {
+
             UserDTO follower = listUsers.get(0);
             UserDTO followed = listUsers.get(1);
 
@@ -172,10 +173,12 @@ public class UserController {
                 log.info(message);
 
                 return ResponseEntity.ok().body(new BasicMessageDTO("Ok", "OK"));
+
             }
 
             return ResponseEntity.badRequest().body(new BasicMessageDTO(HttpStatus.INTERNAL_SERVER_ERROR.toString(),
                     "The request can't be resolved by the server"));
+
         }
     }
 

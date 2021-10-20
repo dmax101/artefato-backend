@@ -1,9 +1,9 @@
 package br.inatel.icc.idp.artefato.model.DTO;
 
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.UUID;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 import br.inatel.icc.idp.artefato.model.UserEntity;
@@ -16,6 +16,7 @@ public class UserDTO {
 
     @NotNull(message = "Can't be null")
     String name;
+    @Email(message = "Email")
     String email;
     String bio;
     Boolean isCrafter;
