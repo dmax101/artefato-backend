@@ -6,5 +6,5 @@ services:
       - '7474:7474'
       - '7687:7687'
     volumes:
-      - '/home/dmax/projects/neo4j/data:/data'
+      - /d/projects/Inatel/icc/Projeto IDP/neo4j/data:/data
     image: neo4j
