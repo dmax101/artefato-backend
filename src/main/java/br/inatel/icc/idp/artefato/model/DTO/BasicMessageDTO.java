@@ -1,4 +1,4 @@
-package br.inatel.icc.idp.artefato.model.DTO.error;
+package br.inatel.icc.idp.artefato.model.DTO;
 
 public class BasicMessageDTO {
 
