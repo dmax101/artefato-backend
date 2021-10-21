@@ -1,3 +1,5 @@
+MATCH (n) DETACH DELETE n;
+
 CREATE (Danilo:User {
     id: '52eeb5f4-43a6-4306-afb0-cb588e0dcd79',
     name: 'Danilo',
@@ -72,24 +74,22 @@ CREATE (Post03:Post {
 })
 
 CREATE 
-    (Danilo)-[:CRAFTED{creation: datetime({timezone: 'America/Sao Paulo'})}]->(Sword),
-    (Danilo)-[:CRAFTED{creation: datetime({timezone: 'America/Sao Paulo'})}]->(Shield),
-    (Sofia)-[:CRAFTED{creation: datetime({timezone: 'America/Sao Paulo'})}]->(Paint),
-    (Danilo)-[:POSTED{creation: datetime({timezone: 'America/Sao Paulo'})}]->(Post01),
-    (Danilo)-[:POSTED{creation: datetime({timezone: 'America/Sao Paulo'})}]->(Post02),
-    (Sofia)-[:POSTED{creation: datetime({timezone: 'America/Sao Paulo'})}]->(Post03),
-    (Danilo)-[:FOLLOW{creation: datetime({timezone: 'America/Sao Paulo'})}]->(Sofia),
-    (Sofia)-[:FOLLOW{creation: datetime({timezone: 'America/Sao Paulo'})}]->(Danilo),
-    (Flavia)-[:FOLLOW{creation: datetime({timezone: 'America/Sao Paulo'})}]->(Sofia),
-    (Flavia)-[:FOLLOW{creation: datetime({timezone: 'America/Sao Paulo'})}]->(Danilo),
-    (Flavia)-[:LIKED{creation: datetime({timezone: 'America/Sao Paulo'})}]->(Post03),
-    (Flavia)-[:LIKED{creation: datetime({timezone: 'America/Sao Paulo'})}]->(Post02),
-    (Sofia)-[:LIKED{creation: datetime({timezone: 'America/Sao Paulo'})}]->(Post01),
-    (Danilo)-[:LIKED{creation: datetime({timezone: 'America/Sao Paulo'})}]->(Post03),
-    (Post01)-[:ABOUT{creation: datetime({timezone: 'America/Sao Paulo'})}]->(Sword),
-    (Post02)-[:ABOUT{creation: datetime({timezone: 'America/Sao Paulo'})}]->(Shield),
-    (Post03)-[:ABOUT{creation: datetime({timezone: 'America/Sao Paulo'})}]->(Paint)
+    (Danilo)-[:CRAFTED{id: randomUUID(), since: localdatetime({timezone: 'America/Sao Paulo'})}]->(Sword),
+    (Danilo)-[:CRAFTED{id: randomUUID(), since: localdatetime({timezone: 'America/Sao Paulo'})}]->(Shield),
+    (Sofia)-[:CRAFTED{id: randomUUID(), since: localdatetime({timezone: 'America/Sao Paulo'})}]->(Paint),
+    (Danilo)-[:POSTED{id: randomUUID(), since: localdatetime({timezone: 'America/Sao Paulo'})}]->(Post01),
+    (Danilo)-[:POSTED{id: randomUUID(), since: localdatetime({timezone: 'America/Sao Paulo'})}]->(Post02),
+    (Sofia)-[:POSTED{id: randomUUID(), since: localdatetime({timezone: 'America/Sao Paulo'})}]->(Post03),
+    (Danilo)-[:FOLLOW{id: randomUUID(), since: localdatetime({timezone: 'America/Sao Paulo'})}]->(Sofia),
+    (Sofia)-[:FOLLOW{id: randomUUID(), since: localdatetime({timezone: 'America/Sao Paulo'})}]->(Danilo),
+    (Flavia)-[:FOLLOW{id: randomUUID(), since: localdatetime({timezone: 'America/Sao Paulo'})}]->(Sofia),
+    (Flavia)-[:FOLLOW{id: randomUUID(), since: localdatetime({timezone: 'America/Sao Paulo'})}]->(Danilo),
+    (Flavia)-[:LIKED{id: randomUUID(), since: localdatetime({timezone: 'America/Sao Paulo'})}]->(Post03),
+    (Flavia)-[:LIKED{id: randomUUID(), since: localdatetime({timezone: 'America/Sao Paulo'})}]->(Post02),
+    (Sofia)-[:LIKED{id: randomUUID(), since: localdatetime({timezone: 'America/Sao Paulo'})}]->(Post01),
+    (Danilo)-[:LIKED{id: randomUUID(), since: localdatetime({timezone: 'America/Sao Paulo'})}]->(Post03),
+    (Post01)-[:ABOUT{id: randomUUID(), since: localdatetime({timezone: 'America/Sao Paulo'})}]->(Sword),
+    (Post02)-[:ABOUT{id: randomUUID(), since: localdatetime({timezone: 'America/Sao Paulo'})}]->(Shield),
+    (Post03)-[:ABOUT{id: randomUUID(), since: localdatetime({timezone: 'America/Sao Paulo'})}]->(Paint)
 
 ;
-
-MATCH (n) DETACH DELETE n;

@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "artefato.database.limit",
+  "type": "java.lang.String",
+  "description": "Limit the number of objects from database"
+}]}
