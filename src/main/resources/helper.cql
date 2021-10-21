@@ -30,7 +30,7 @@ CREATE (Sword:Product {
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
     price: '9200',
     isAvailable: false,
-    imageURL: 'https://images.unsplash.com/photo-1542403764-19e1bb75cc75?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1170&q=80'
+    imageURL: ['https://images.unsplash.com/photo-1542403764-19e1bb75cc75?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1170&q=80']
 })
 CREATE (Shield:Product {
     id: 'eb6d93b6-bc00-4200-b725-ecc249634877',
@@ -38,7 +38,7 @@ CREATE (Shield:Product {
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
     price: '4500',
     isAvailable: true,
-    imageURL: 'https://static.turbosquid.com/Preview/2014/07/07__04_25_09/spartanshield-0005.jpg58ada6cc-0962-4a30-97ce-5b46452e4a65Zoom.jpg'
+    imageURL: ['https://static.turbosquid.com/Preview/2014/07/07__04_25_09/spartanshield-0005.jpg58ada6cc-0962-4a30-97ce-5b46452e4a65Zoom.jpg']
 })
 CREATE (Paint:Product {
     id: '8f0577aa-57a5-4596-9e88-18a76c899214',
@@ -46,7 +46,7 @@ CREATE (Paint:Product {
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
     price: '21000',
     isAvailable: true,
-    imageURL: 'https://www.artmajeur.com/medias/hd/s/o/soulwatercolor/artwork/12799847_girl-sitting-in-cafe-drinking-coffee.jpg'
+    imageURL: ['https://www.artmajeur.com/medias/hd/s/o/soulwatercolor/artwork/12799847_girl-sitting-in-cafe-drinking-coffee.jpg']
 })
 CREATE (Post01:Post {
     id: '230dee80-1f23-4fb9-864f-a802edb477c2',
