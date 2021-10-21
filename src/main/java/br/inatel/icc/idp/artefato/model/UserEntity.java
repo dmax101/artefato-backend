@@ -4,11 +4,6 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
@@ -26,16 +21,8 @@ public class UserEntity {
     @GeneratedValue(UUIDStringGenerator.class)
     private UUID id;
 
-    @NotBlank(message = "Name is mandatory")
-    @NotNull(message = "Can't be null")
-    @Size(min = 3)
     private final String name;
-
-    @NotBlank(message = "Email is mandatory")
-    @NotNull(message = "Can't be null")
-    @Email
     private final String email;
-
     private final String bio;
     private final Boolean isCrafter;
     private final BigDecimal wallet;
@@ -47,7 +34,7 @@ public class UserEntity {
     @Relationship(type = "LIKED", direction = Direction.OUTGOING)
     private List<PostEntity> liked;
     @Relationship(type = "FOLLOW", direction = Direction.OUTGOING)
-    private List<FollowRelationship> follow;
+    private List<UserEntity> follow;
 
     public UserEntity(String name, String email, String bio, Boolean isCrafter, BigDecimal wallet) {
         this.id = null;

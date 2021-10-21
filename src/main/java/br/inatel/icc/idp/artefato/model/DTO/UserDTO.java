@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import br.inatel.icc.idp.artefato.model.UserEntity;
 import lombok.AllArgsConstructor;
@@ -14,10 +15,12 @@ import lombok.Data;
 @AllArgsConstructor
 public class UserDTO {
 
-    @NotNull(message = "Can't be null")
+    @NotNull(message = "Name can't be null")
+    @Size(min = 3, message = "Name have to contain at least 3 characters")
     String name;
-    @Email(message = "Email")
+    @Email(message = "E-mail have to be valid")
     String email;
+    @Size(max = 255, message = "Bio have to contain at maximum 255 characters")
     String bio;
     Boolean isCrafter;
     BigDecimal wallet;

@@ -1,6 +1,7 @@
 package br.inatel.icc.idp.artefato.repository;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
@@ -10,7 +11,6 @@ import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Repository;
 
-import br.inatel.icc.idp.artefato.model.FollowRelationship;
 import br.inatel.icc.idp.artefato.model.UserEntity;
 
 @Repository
@@ -34,8 +34,8 @@ public interface UserRepository extends Neo4jRepository<UserEntity, UUID> {
             BigDecimal wallet);
 
     @Async
-    @Query("MATCH (U1:User {id: $followerId}) MATCH (U2:User {id: $followedId}) CREATE (U1)-[F:FOLLOW{since: localdatetime()}]->(U2) RETURN F")
-    Optional<FollowRelationship> createUserFollowRelationship(UUID followerId, UUID followedId);
+    @Query("MATCH (u1:User {id: $followerId}) MATCH (u2:User {id: $influencerId}) CREATE (u1)-[f:FOLLOW{since: localdatetime({timezone: 'America/Sao Paulo'})}]->(u2) RETURN f.since")
+    Optional<LocalDateTime> createUserFollowRelationship(UUID followerId, UUID influencerId);
 
     @Async
     @Query("MATCH (u:User{id: $id}) RETURN u LIMIT 1")
@@ -52,4 +52,8 @@ public interface UserRepository extends Neo4jRepository<UserEntity, UUID> {
     @Async
     @Query("MATCH (u:User{id: $id, name: $name, email: $email}) RETURN u LIMIT 1")
     Optional<UserEntity> getUserByIdAndNameAndEmail(UUID id, String name, String email);
+
+    @Async
+    @Query("MATCH (user:User{id: $userId}) OPTIONAL MATCH (user)-[c:CRAFTED]->(product:Product) OPTIONAL MATCH (user)-[p:POSTED]->(post:Post) DETACH DELETE user, product, post RETURN $userId")
+    Optional<String> removeUserAndAllAssets(String userId);
 }

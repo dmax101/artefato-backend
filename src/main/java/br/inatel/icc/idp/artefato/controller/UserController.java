@@ -1,10 +1,11 @@
 package br.inatel.icc.idp.artefato.controller;
 
 import java.net.URI;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -14,11 +15,13 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,7 +32,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.inatel.icc.idp.artefato.model.FollowRelationship;
 import br.inatel.icc.idp.artefato.model.UserEntity;
 import br.inatel.icc.idp.artefato.model.DTO.BasicMessageDTO;
 import br.inatel.icc.idp.artefato.model.DTO.UserDTO;
@@ -51,6 +53,9 @@ public class UserController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    Environment env;
 
     @GetMapping
     public ResponseEntity<?> getUser(String email, String name, String id) {
@@ -90,7 +95,8 @@ public class UserController {
                 return ResponseEntity.ok(Arrays.asList());
             }
         } else if (name != null) {
-            Collection<UserEntity> responseUserEntity = userRepository.getUserByName(name, 5);
+            Collection<UserEntity> responseUserEntity = userRepository.getUserByName(name,
+                    Integer.parseInt(env.getProperty("artefato.database.limit")));
 
             Collection<UserDTO> userDTOs = responseUserEntity.stream().map(UserDTO::convertToDTO)
                     .collect(Collectors.toList());
@@ -109,29 +115,18 @@ public class UserController {
 
     }
 
-    @PostMapping
-    public ResponseEntity<?> getUser(@RequestBody UserDTO user) {
-        Optional<UserEntity> userEntity = userRepository.getUser(user.getName(), user.getEmail());
-
-        if (userEntity.isPresent()) {
-            return ResponseEntity.ok(Arrays.asList(userEntity.get()));
-        }
-        return ResponseEntity.ok(Arrays.asList());
-
-    }
-
-    @GetMapping("/user/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getUserResource(@PathVariable String id) {
 
-        Optional<UserEntity> responseUserEntity = userRepository.findById(UUID.fromString(id));
+        Optional<UserEntity> responseUserEntity = userRepository.getUserById(UUID.fromString(id));
 
         if (responseUserEntity.isPresent()) {
 
-            return ResponseEntity.ok(Arrays.asList(UserDTO.convertToDTO(responseUserEntity.get())));
+            return ResponseEntity.ok(UserDTO.convertToDTO(responseUserEntity.get()));
 
         }
 
-        return ResponseEntity.ok(Arrays.asList());
+        return ResponseEntity.notFound().build();
 
     }
 
@@ -154,31 +149,44 @@ public class UserController {
     }
 
     @PostMapping("/follow")
-    public ResponseEntity<?> createNewRelationship(@RequestBody List<UserDTO> listUsers) {
-        if (listUsers.size() != 2) {
+    public ResponseEntity<?> userFollow(String followerId, String influencerId, UriComponentsBuilder uriBuilder) {
 
-            return ResponseEntity.badRequest().body(new BasicMessageDTO(HttpStatus.BAD_REQUEST.toString(),
-                    "You have to provide the follower and followed users"));
+        Optional<LocalDateTime> followSince = userRepository.createUserFollowRelationship(UUID.fromString(followerId),
+                UUID.fromString(influencerId));
+
+        if (followSince.isPresent()) {
+
+            URI uri = uriBuilder.path("/followers/{id}").buildAndExpand(followerId).toUri();
+
+            String message = followerId + " -- "
+                    + followSince.get().format(DateTimeFormatter.ofPattern("E, MMM dd yyyy HH:mm:ss")) + " -> "
+                    + influencerId;
+
+            log.info(message);
+
+            return ResponseEntity.created(uri).body(new BasicMessageDTO(HttpStatus.CREATED.toString(), message));
 
         } else {
 
-            UserDTO follower = listUsers.get(0);
-            UserDTO followed = listUsers.get(1);
+            return ResponseEntity.badRequest().body(new BasicMessageDTO(HttpStatus.BAD_REQUEST.toString(),
+                    "You have to provide the follower and followed ids"));
 
-            Optional<FollowRelationship> followRelationship = userService.createNewRelationship(follower, followed);
+        }
 
-            if (followRelationship.isPresent()) {
-                log.info(followRelationship.toString());
-                String message = "Now the " + follower.getName() + " follow " + followed.getName();
-                log.info(message);
+    }
 
-                return ResponseEntity.ok().body(new BasicMessageDTO("Ok", "OK"));
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> removeUserAndAllAssets(String id) {
 
-            }
+        Optional<String> message = userRepository.removeUserAndAllAssets(id);
 
-            return ResponseEntity.badRequest().body(new BasicMessageDTO(HttpStatus.INTERNAL_SERVER_ERROR.toString(),
-                    "The request can't be resolved by the server"));
+        if (message.isPresent()) {
 
+            return ResponseEntity.ok(new BasicMessageDTO(HttpStatus.OK.toString(),
+                    "The user with id " + message.get() + " was removed with all Posts and Products"));
+        } else {
+
+            return ResponseEntity.notFound().build();
         }
     }
 
