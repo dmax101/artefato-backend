@@ -1,10 +1,19 @@
-version: '3.3'
+version: "3.9"
+
 services:
   neo4j:
-    image: 'neo4j'
+    image: "neo4j"
     ports:
-      - '7474:7474'
-      - '7687:7687'
+      - "7474:7474"
+      - "7687:7687"
     volumes:
       - /d/projects/Inatel/icc/Projeto IDP/neo4j/data:/data
-    image: neo4j
+
+  artefato:
+    image: "danribeiro/artefato"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - "neo4j"
+    environment:
+      - "SPRING_NEO4J_URI=bolt://neo4j:7687"
