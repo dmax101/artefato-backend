@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +42,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/user")
-@Cacheable("UserCache")
 @Validated
 @Slf4j
 public class UserController {

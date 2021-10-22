@@ -26,4 +26,8 @@ public interface ProductRepository extends Neo4jRepository<ProductEntity, UUID> 
     @Query("MATCH (p:Product{id: $id}) WHERE toLower(p.name) CONTAINS toLower($name) RETURN p")
     Optional<ProductEntity> getProductByIdAndName(UUID id, String name);
 
+    @Async
+    @Query("MATCH (p:Product{id: $id}) RETURN p")
+    Optional<ProductEntity> getProductById(UUID id);
+
 }

@@ -6,30 +6,36 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.inatel.icc.idp.artefato.model.ProductEntity;
+import br.inatel.icc.idp.artefato.model.DTO.BasicMessageDTO;
+import br.inatel.icc.idp.artefato.model.DTO.OrderDTO;
 import br.inatel.icc.idp.artefato.repository.ProductRepository;
 import br.inatel.icc.idp.artefato.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/product")
-@Cacheable
 @Validated
 @Slf4j
 public class ProductController {
 
     @Autowired
+    ProductService productService;
+
+    @Autowired
     ProductRepository productRepository;
 
     @Autowired
-    ProductService productService;
+    Environment env;
 
     @GetMapping
     public ResponseEntity<?> getProduct(String id, String name) {
@@ -71,6 +77,14 @@ public class ProductController {
             return ResponseEntity.ok(productService.convertListEntityToListDTO(productEntity));
         }
 
+    }
+
+    @PostMapping("/purchase")
+    public ResponseEntity<?> purchaseProduct(@RequestBody OrderDTO order) {
+
+        BasicMessageDTO message = productService.purchase(order);
+
+        return ResponseEntity.ok(message);
     }
 
 }
