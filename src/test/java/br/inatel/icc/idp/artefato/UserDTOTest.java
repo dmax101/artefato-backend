@@ -2,8 +2,6 @@ package br.inatel.icc.idp.artefato;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.math.BigDecimal;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +20,7 @@ public class UserDTOTest {
     @Test
     public void testUserDTOIsConvertingToUserEntity() {
 
-        UserEntity userEntity = new UserEntity("name", "email", "bio", false, new BigDecimal(0));
+        UserEntity userEntity = new UserEntity("name", "email", "bio", false, 0.0);
 
         UserDTO userDTO = UserDTO.convertToDTO(userEntity);
 

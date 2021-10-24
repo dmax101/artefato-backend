@@ -1,6 +1,5 @@
 package br.inatel.icc.idp.artefato.model.DTO;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
@@ -14,14 +13,17 @@ import lombok.Data;
 @AllArgsConstructor
 public class ProductDTO {
 
-    @NotNull(message = "Name can't be null")
-    @Size(min = 3, message = "Name have to contain at least 3 characters")
+    @NotNull(message = "Nome não pode ser nulo")
+    @Size(min = 3, message = "Nome deve conter mais de 2 caracteres")
     private final String name;
-    @NotNull(message = "Description can't be null")
-    @Size(max = 255, message = "Description have to contain at maximum 255 characters")
+    @NotNull(message = "Descrição não pode ser nula")
+    @Size(max = 255, message = "A descrição deve ter no máximo 255 caracteres")
     private final String description;
-    private final BigDecimal price;
+    @NotNull(message = "Preço não pode ser nulo")
+    private final Double price;
+    @NotNull(message = "Disponibilidade não pode ser nula")
     private final Boolean isAvailable;
+    @NotNull(message = "Imagem não pode ser nula")
     private final List<String> imageURL;
 
     public static ProductDTO convertToDTO(ProductEntity productEntity) {

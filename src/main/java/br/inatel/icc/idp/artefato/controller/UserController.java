@@ -5,29 +5,26 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -56,7 +53,9 @@ public class UserController {
     Environment env;
 
     @GetMapping
-    public ResponseEntity<?> getUser(String email, String name, String id) {
+    public ResponseEntity<?> getUser(@Email(message = "Email deve ser bem formatado!") String email,
+            @Size(min = 3, message = "Tamanho deve ser maior que 2 caracteres") String name,
+            @Pattern(regexp = "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$", message = "Deve seguir o padrão de formatação UUID") String id) {
         log.info("Getting users");
 
         if (email == null && name == null && id == null) {
@@ -114,7 +113,8 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getUserResource(@PathVariable String id) {
+    public ResponseEntity<?> getUserResource(
+            @PathVariable @Pattern(regexp = "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$", message = "Deve seguir o padrão de formatação UUID") String id) {
 
         Optional<UserEntity> responseUserEntity = userRepository.getUserById(UUID.fromString(id));
 
@@ -147,7 +147,10 @@ public class UserController {
     }
 
     @PostMapping("/follow")
-    public ResponseEntity<?> userFollow(String followerId, String influencerId, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<?> userFollow(
+            @Pattern(regexp = "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$", message = "Deve seguir o padrão de formatação UUID") String followerId,
+            @Pattern(regexp = "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$", message = "Deve seguir o padrão de formatação UUID") String influencerId,
+            UriComponentsBuilder uriBuilder) {
 
         Optional<LocalDateTime> followSince = userRepository.createUserFollowRelationship(UUID.fromString(followerId),
                 UUID.fromString(influencerId));
@@ -174,33 +177,19 @@ public class UserController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<?> removeUserAndAllAssets(String id) {
+    public ResponseEntity<?> removeUserAndAllAssets(
+            @Pattern(regexp = "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$", message = "Deve seguir o padrão de formatação UUID") String id) {
 
         Optional<String> message = userRepository.removeUserAndAllAssets(id);
 
         if (message.isPresent()) {
 
             return ResponseEntity.ok(new BasicMessageDTO(HttpStatus.OK.toString(),
-                    "The user with id " + message.get() + " was removed with all Posts and Products"));
+                    "O usuário com o id " + message.get() + " foi removido junto com seus Posts e Products"));
         } else {
 
             return ResponseEntity.notFound().build();
         }
-    }
-
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach(error -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-
-        log.error(HttpStatus.BAD_REQUEST.toString(), errors);
-
-        return errors;
     }
 
 }

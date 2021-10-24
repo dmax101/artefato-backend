@@ -1,6 +1,5 @@
 package br.inatel.icc.idp.artefato.model;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,12 +20,11 @@ public class ProductEntity {
 
     private final String name;
     private final String description;
-    private final BigDecimal price;
+    private final Double price;
     private final Boolean isAvailable;
     private final List<String> imageURL;
 
-    public ProductEntity(String name, String description, BigDecimal price, Boolean isAvailable,
-            List<String> imageURL) {
+    public ProductEntity(String name, String description, Double price, Boolean isAvailable, List<String> imageURL) {
         this.id = null;
         this.name = name;
         this.description = description;

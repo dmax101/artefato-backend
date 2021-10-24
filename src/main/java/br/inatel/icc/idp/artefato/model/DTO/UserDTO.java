@@ -1,6 +1,5 @@
 package br.inatel.icc.idp.artefato.model.DTO;
 
-import java.math.BigDecimal;
 import java.util.UUID;
 
 import javax.validation.constraints.Email;
@@ -15,15 +14,15 @@ import lombok.Data;
 @AllArgsConstructor
 public class UserDTO {
 
-    @NotNull(message = "Name can't be null")
-    @Size(min = 3, message = "Name have to contain at least 3 characters")
+    @NotNull(message = "Nome não pode ser nulo")
+    @Size(min = 3, message = "Nome deve conter mais de 2 caracteres")
     String name;
-    @Email(message = "E-mail have to be valid")
+    @Email(message = "O e-mail dever ser bem formatado")
     String email;
-    @Size(max = 255, message = "Bio have to contain at maximum 255 characters")
+    @Size(max = 255, message = "A Bio deve ter no máximo 255 caracteres")
     String bio;
     Boolean isCrafter;
-    BigDecimal wallet;
+    Double wallet;
 
     public UserEntity convetToEntity() {
         UserEntity userEntity = new UserEntity(this.name, this.email, this.bio, this.isCrafter, this.wallet);

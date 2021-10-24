@@ -5,8 +5,13 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.data.util.Pair;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.inatel.icc.idp.artefato.model.ProductEntity;
 import br.inatel.icc.idp.artefato.model.DTO.BasicMessageDTO;
 import br.inatel.icc.idp.artefato.model.DTO.OrderDTO;
+import br.inatel.icc.idp.artefato.model.DTO.TicketDTO;
 import br.inatel.icc.idp.artefato.repository.ProductRepository;
 import br.inatel.icc.idp.artefato.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +44,9 @@ public class ProductController {
     Environment env;
 
     @GetMapping
-    public ResponseEntity<?> getProduct(String id, String name) {
+    public ResponseEntity<?> getProduct(
+            @Pattern(regexp = "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$", message = "Deve seguir o padrão de formatação UUID") String id,
+            @Size(min = 3, message = "Tamanho deve ser maior que 2 caracteres") String name) {
         log.info("Searching products");
 
         if (id == null && name == null) {
@@ -80,11 +88,15 @@ public class ProductController {
     }
 
     @PostMapping("/purchase")
-    public ResponseEntity<?> purchaseProduct(@RequestBody OrderDTO order) {
+    public ResponseEntity<?> purchaseProduct(@RequestBody @Valid OrderDTO order) {
 
-        BasicMessageDTO message = productService.purchase(order);
+        Pair<TicketDTO, BasicMessageDTO> paymentInfo = productService.getPaymentInfo(order);
 
-        return ResponseEntity.ok(message);
+        if (paymentInfo.getFirst().getPaymentInfo() == null) {
+            return ResponseEntity.badRequest().body(paymentInfo.getSecond());
+        }
+
+        return ResponseEntity.ok(paymentInfo.getFirst());
     }
 
 }
