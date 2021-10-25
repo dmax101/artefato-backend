@@ -38,3 +38,56 @@ These are the components of our Web Application:
 |NEO4J_VERSION
 |	4.3.5
 |===
+
+== Running Docker image locally
+First you have to clone the project on github https://github.com/dmax101/artefato-backend.git.
+After that you have to go to the folder of project and execute the Maven command to create a package.
+```bash
+.\mvnw clean package
+```
+
+After that you have to create a image of the application:
+
+```bash
+docker build --pull --rm -f "Dockerfile" -t artefato:latest "."
+```
+
+That's it! the image is ready to go.
+
+Now you have to create the containers of the application.
+and to do that you have to execute the follow command:
+
+```bash
+docker-compose -f "docker-compose.yml" up -d --build
+
+```
+
+[NOTE]
+It's important you change the volume in Neo4j container to persist your data.
+
+.docker-compose.yml
+----
+version: "3.9"
+
+services:
+  neo4j:
+    image: "neo4j"
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+      - [PATH_TO]/neo4j/data:/data
+
+  artefato:
+    image: "danribeiro/artefato"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - "neo4j"
+    environment:
+      - "SPRING_NEO4J_URI=bolt://neo4j:7687"
+
+---- 
+
+== API documentation
+To access the api documentation of endpoints, access in the browser this link http://localhost:8080/swagger-ui/index.html#/[link].
