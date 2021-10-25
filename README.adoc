@@ -90,4 +90,4 @@ services:
 ---- 
 
 == API documentation
-To access the api documentation of endpoints, access in the browser this link http://localhost:8080/swagger-ui/index.html#/[link].
+To access the api documentation of endpoints, access in the browser this http://localhost:8080/swagger-ui/index.html#/[link].
