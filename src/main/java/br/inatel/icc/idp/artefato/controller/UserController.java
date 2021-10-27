@@ -138,7 +138,7 @@ public class UserController {
         if (responseUserEntity.isPresent()) {
             URI uri = uriBuilder.path("/user/{id}").buildAndExpand(responseUserEntity.get().getId()).toUri();
 
-            return ResponseEntity.created(uri).body(Arrays.asList(UserDTO.convertToDTO(responseUserEntity.get())));
+            return ResponseEntity.created(uri).body(UserDTO.convertToDTO(responseUserEntity.get()));
         }
 
         return ResponseEntity.badRequest().body(

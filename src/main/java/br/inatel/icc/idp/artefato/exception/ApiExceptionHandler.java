@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.validation.ConstraintViolationException;
+import javax.validation.UnexpectedTypeException;
+
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ApiExceptionHandler {
 
     @ExceptionHandler(value = { ConstraintViolationException.class, IllegalArgumentException.class,
-            HttpMessageNotReadableException.class })
+            HttpMessageNotReadableException.class, UnexpectedTypeException.class, InvalidFormatException.class })
     public ResponseEntity<?> handleValidationException(RuntimeException e) {
 
         String message = e.getMessage();
