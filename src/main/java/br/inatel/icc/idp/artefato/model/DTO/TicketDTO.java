@@ -1,5 +1,6 @@
 package br.inatel.icc.idp.artefato.model.DTO;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 import br.inatel.icc.idp.artefato.model.ResponsePixAe;
@@ -12,7 +13,7 @@ public class TicketDTO {
 
     private String buyerName;
     private UUID buyerId;
-    private Double value;
+    private BigDecimal value;
     private String productName;
     private UUID productId;
     private ResponsePixAe paymentInfo;

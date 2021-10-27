@@ -1,5 +1,6 @@
 package br.inatel.icc.idp.artefato.service;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -83,7 +84,7 @@ public class ProductService {
         String tipo = "email";
         String nome = crafter.get().getName();
         String info = "Compra de: " + product.get().getName() + ": " + product.get().getDescription();
-        Double valor = product.get().getPrice();
+        BigDecimal valor = product.get().getPrice();
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(env.getProperty("artefato.consuming.url"))
                 .queryParam("chave", chave).queryParam("tipo", tipo).queryParam("nome", nome).queryParam("info", info)

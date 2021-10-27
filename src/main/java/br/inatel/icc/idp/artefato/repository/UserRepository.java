@@ -1,5 +1,6 @@
 package br.inatel.icc.idp.artefato.repository;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Optional;
@@ -25,7 +26,8 @@ public interface UserRepository extends Neo4jRepository<UserEntity, UUID> {
 
     @Async
     @Query("CREATE (u:User {id: randomUUID(), name: $name, email: $email, bio: $bio, isCrafter: $isCrafter, wallet: $wallet}) RETURN u")
-    Optional<UserEntity> saveUserToDatabase(String name, String email, String bio, Boolean isCrafter, Double wallet);
+    Optional<UserEntity> saveUserToDatabase(String name, String email, String bio, Boolean isCrafter,
+            BigDecimal wallet);
 
     @Async
     @Query("MATCH (u1:User {id: $followerId}) MATCH (u2:User {id: $influencerId}) CREATE (u1)-[f:FOLLOW{since: localdatetime({timezone: 'America/Sao Paulo'})}]->(u2) RETURN f.since")

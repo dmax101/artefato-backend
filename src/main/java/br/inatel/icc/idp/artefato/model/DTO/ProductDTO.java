@@ -1,5 +1,6 @@
 package br.inatel.icc.idp.artefato.model.DTO;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
@@ -20,7 +21,7 @@ public class ProductDTO {
     @Size(max = 255, message = "A descrição deve ter no máximo 255 caracteres")
     private final String description;
     @NotNull(message = "Preço não pode ser nulo")
-    private final Double price;
+    private final BigDecimal price;
     @NotNull(message = "Disponibilidade não pode ser nula")
     private final Boolean isAvailable;
     @NotNull(message = "Imagem não pode ser nula")

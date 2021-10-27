@@ -1,5 +1,6 @@
 package br.inatel.icc.idp.artefato.model;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,7 +25,7 @@ public class UserEntity {
     private final String email;
     private final String bio;
     private final Boolean isCrafter;
-    private final Double wallet;
+    private final BigDecimal wallet;
 
     @Relationship(type = "CRAFTED", direction = Direction.OUTGOING)
     private List<ProductEntity> product;
@@ -35,7 +36,7 @@ public class UserEntity {
     @Relationship(type = "FOLLOW", direction = Direction.OUTGOING)
     private List<UserEntity> follow;
 
-    public UserEntity(String name, String email, String bio, Boolean isCrafter, Double wallet) {
+    public UserEntity(String name, String email, String bio, Boolean isCrafter, BigDecimal wallet) {
         this.id = null;
         this.name = name;
         this.email = email;

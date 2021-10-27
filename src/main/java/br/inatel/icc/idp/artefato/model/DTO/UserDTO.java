@@ -1,5 +1,6 @@
 package br.inatel.icc.idp.artefato.model.DTO;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 import javax.validation.constraints.Email;
@@ -22,7 +23,7 @@ public class UserDTO {
     @Size(max = 255, message = "A Bio deve ter no máximo 255 caracteres")
     String bio;
     Boolean isCrafter;
-    Double wallet;
+    BigDecimal wallet;
 
     public UserEntity convetToEntity() {
         UserEntity userEntity = new UserEntity(this.name, this.email, this.bio, this.isCrafter, this.wallet);
