@@ -7,4 +7,10 @@
   "name": "artefato.consuming.url",
   "type": "java.lang.String",
   "description": "Base url for pix.ae"
-}]}
+},
+{
+  "name": "artefato.frontend.url",
+  "type": "java.lang.String",
+  "description": "Base url for the front end"
+}
+]}
