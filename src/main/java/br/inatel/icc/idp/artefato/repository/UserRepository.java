@@ -56,4 +56,8 @@ public interface UserRepository extends Neo4jRepository<UserEntity, UUID> {
     @Async
     @Query("MATCH (user:User)-[c:CRAFTED]->(product:Product{id: $productId}) RETURN user")
     Optional<UserEntity> getUserCrafterOfProduct(UUID productId);
+
+    @Async
+    @Query("MATCH (user:User)<-[f:FOLLOW]-(:User{id: $id}) RETURN user")
+    Collection<UserEntity> getUserFollowers(UUID id);
 }

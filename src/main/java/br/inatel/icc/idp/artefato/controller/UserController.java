@@ -30,6 +30,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.inatel.icc.idp.artefato.model.UserEntity;
 import br.inatel.icc.idp.artefato.model.DTO.BasicMessageDTO;
+import br.inatel.icc.idp.artefato.model.DTO.FollowDTO;
 import br.inatel.icc.idp.artefato.model.DTO.UserDTO;
 import br.inatel.icc.idp.artefato.model.DTO.error.ErrorDTO;
 import br.inatel.icc.idp.artefato.repository.UserRepository;
@@ -147,21 +148,18 @@ public class UserController {
     }
 
     @PostMapping("/follow")
-    public ResponseEntity<?> userFollow(
-            @Pattern(regexp = "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$", message = "Deve seguir o padrão de formatação UUID") String followerId,
-            @Pattern(regexp = "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$", message = "Deve seguir o padrão de formatação UUID") String influencerId,
-            UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<?> userFollow(@RequestBody @Valid FollowDTO followDTO, UriComponentsBuilder uriBuilder) {
 
-        Optional<LocalDateTime> followSince = userRepository.createUserFollowRelationship(UUID.fromString(followerId),
-                UUID.fromString(influencerId));
+        Optional<LocalDateTime> followSince = userRepository.createUserFollowRelationship(followDTO.getFollowerId(),
+                followDTO.getInfluencerId());
 
         if (followSince.isPresent()) {
 
-            URI uri = uriBuilder.path("/followers/{id}").buildAndExpand(followerId).toUri();
+            URI uri = uriBuilder.path("/influencers/{id}").buildAndExpand(followDTO.getFollowerId()).toUri();
 
-            String message = followerId + " -- "
+            String message = followDTO.getFollowerId() + " -- "
                     + followSince.get().format(DateTimeFormatter.ofPattern("E, MMM dd yyyy HH:mm:ss")) + " -> "
-                    + influencerId;
+                    + followDTO.getInfluencerId();
 
             log.info(message);
 
@@ -173,6 +171,22 @@ public class UserController {
                     "You have to provide the follower and followed ids"));
 
         }
+    }
+
+    @GetMapping("/influencers/{id}")
+    public ResponseEntity<?> getUserFollowResource(
+            @PathVariable @Pattern(regexp = "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$", message = "Deve seguir o padrão de formatação UUID") String id) {
+
+        Optional<UserEntity> user = userRepository.getUserById(UUID.fromString(id));
+
+        if (user.isPresent()) {
+            Collection<UserEntity> responseUserEntity = userRepository.getUserFollowers(UUID.fromString(id));
+
+            return ResponseEntity
+                    .ok(responseUserEntity.stream().map(UserDTO::convertToDTO).collect(Collectors.toList()));
+        }
+
+        return ResponseEntity.notFound().build();
 
     }
 

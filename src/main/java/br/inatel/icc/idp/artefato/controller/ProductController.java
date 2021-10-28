@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -112,9 +113,25 @@ public class ProductController {
         Optional<ProductEntity> product = productService.createNewProduct(newProductDTO);
 
         if (product.isPresent()) {
-            URI uri = uriBuilder.path("/user/{id}").buildAndExpand(product.get().getId()).toUri();
+            URI uri = uriBuilder.path("/product/{id}").buildAndExpand(product.get().getId()).toUri();
 
             return ResponseEntity.created(uri).body(ProductDTO.convertToDTO(product.get()));
+
+        }
+
+        return ResponseEntity.notFound().build();
+
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getProductResource(
+            @PathVariable @Pattern(regexp = "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$", message = "Deve seguir o padrão de formatação UUID") String id) {
+
+        Optional<ProductEntity> responseProductEntity = productRepository.getProductById(UUID.fromString(id));
+
+        if (responseProductEntity.isPresent()) {
+
+            return ResponseEntity.ok(ProductDTO.convertToDTO(responseProductEntity.get()));
 
         }
 

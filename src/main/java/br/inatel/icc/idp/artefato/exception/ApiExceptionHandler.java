@@ -29,7 +29,7 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler(value = { ConstraintViolationException.class, IllegalArgumentException.class,
             HttpMessageNotReadableException.class, UnexpectedTypeException.class, InvalidFormatException.class,
-            ConverterNotFoundException.class })
+            ConverterNotFoundException.class, NullPointerException.class })
     public ResponseEntity<?> handleValidationException(RuntimeException e) {
 
         String message = e.getMessage();

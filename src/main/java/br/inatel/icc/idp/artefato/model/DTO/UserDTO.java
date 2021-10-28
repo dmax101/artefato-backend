@@ -8,6 +8,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.inatel.icc.idp.artefato.model.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,6 +22,7 @@ public class UserDTO {
     @Size(min = 3, message = "Nome deve conter mais de 2 caracteres")
     String name;
     @Email(message = "O e-mail dever ser bem formatado")
+    @JsonIgnore
     String email;
     @Size(max = 255, message = "A Bio deve ter no máximo 255 caracteres")
     String bio;

@@ -6,7 +6,7 @@ CREATE (Danilo:User {
     email: 'danilo@gmail.com',
     bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
     isCrafter: true,
-    wallet: '0'
+    wallet: '5000'
 })
 CREATE (Sofia:User {
     id: 'c6517cfa-858b-4880-831a-2a3837eb5048',
@@ -14,7 +14,7 @@ CREATE (Sofia:User {
     email: 'sofia@gmail.com',
     bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
     isCrafter: true,
-    wallet: '0'
+    wallet: '5000'
 })
 CREATE (Flavia:User {
     id: 'b859a7b5-0ddf-4558-8e36-d5c8bfa1de2d',
@@ -22,7 +22,7 @@ CREATE (Flavia:User {
     email: 'flavia@gmail.com',
     bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
     isCrafter: false,
-    wallet: '0'
+    wallet: '5000'
 })
 CREATE (Sword:Product {
     id: 'daa5d119-b48f-41cf-bf49-e2835d883610',
