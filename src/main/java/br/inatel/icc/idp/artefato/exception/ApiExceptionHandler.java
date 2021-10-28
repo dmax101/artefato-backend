@@ -9,6 +9,7 @@ import javax.validation.UnexpectedTypeException;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 
+import org.springframework.core.convert.ConverterNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -27,7 +28,8 @@ import lombok.extern.slf4j.Slf4j;
 public class ApiExceptionHandler {
 
     @ExceptionHandler(value = { ConstraintViolationException.class, IllegalArgumentException.class,
-            HttpMessageNotReadableException.class, UnexpectedTypeException.class, InvalidFormatException.class })
+            HttpMessageNotReadableException.class, UnexpectedTypeException.class, InvalidFormatException.class,
+            ConverterNotFoundException.class })
     public ResponseEntity<?> handleValidationException(RuntimeException e) {
 
         String message = e.getMessage();

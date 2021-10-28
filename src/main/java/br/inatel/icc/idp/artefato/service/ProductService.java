@@ -26,6 +26,7 @@ import br.inatel.icc.idp.artefato.model.ProductEntity;
 import br.inatel.icc.idp.artefato.model.ResponsePixAe;
 import br.inatel.icc.idp.artefato.model.UserEntity;
 import br.inatel.icc.idp.artefato.model.DTO.BasicMessageDTO;
+import br.inatel.icc.idp.artefato.model.DTO.NewProductDTO;
 import br.inatel.icc.idp.artefato.model.DTO.OrderDTO;
 import br.inatel.icc.idp.artefato.model.DTO.ProductDTO;
 import br.inatel.icc.idp.artefato.model.DTO.TicketDTO;
@@ -119,6 +120,20 @@ public class ProductService {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         return headers;
+    }
+
+    public Optional<ProductEntity> createNewProduct(NewProductDTO newProductDTO) {
+
+        Optional<UserEntity> crafter = userRepository.getUserById(newProductDTO.getIdCrafter());
+
+        if (!crafter.isPresent()) {
+            return Optional.empty();
+        }
+
+        return productRepository.createNewProduct(newProductDTO.getIdCrafter(), newProductDTO.getName(),
+                newProductDTO.getDescription(), newProductDTO.getPrice(), newProductDTO.getIsAvailable(),
+                newProductDTO.getImageURL());
+
     }
 
 }

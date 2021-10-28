@@ -1,5 +1,6 @@
 package br.inatel.icc.idp.artefato.controller;
 
+import java.net.URI;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Optional;
@@ -20,10 +21,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import br.inatel.icc.idp.artefato.model.ProductEntity;
 import br.inatel.icc.idp.artefato.model.DTO.BasicMessageDTO;
+import br.inatel.icc.idp.artefato.model.DTO.NewProductDTO;
 import br.inatel.icc.idp.artefato.model.DTO.OrderDTO;
+import br.inatel.icc.idp.artefato.model.DTO.ProductDTO;
 import br.inatel.icc.idp.artefato.model.DTO.TicketDTO;
 import br.inatel.icc.idp.artefato.repository.ProductRepository;
 import br.inatel.icc.idp.artefato.service.ProductService;
@@ -99,6 +103,23 @@ public class ProductController {
         }
 
         return ResponseEntity.ok(paymentInfo.getFirst());
+    }
+
+    @PostMapping
+    public ResponseEntity<?> createProduct(@RequestBody @Valid NewProductDTO newProductDTO,
+            UriComponentsBuilder uriBuilder) {
+
+        Optional<ProductEntity> product = productService.createNewProduct(newProductDTO);
+
+        if (product.isPresent()) {
+            URI uri = uriBuilder.path("/user/{id}").buildAndExpand(product.get().getId()).toUri();
+
+            return ResponseEntity.created(uri).body(ProductDTO.convertToDTO(product.get()));
+
+        }
+
+        return ResponseEntity.notFound().build();
+
     }
 
 }

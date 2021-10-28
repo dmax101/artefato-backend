@@ -23,7 +23,7 @@ public class UserDTO {
     String email;
     @Size(max = 255, message = "A Bio deve ter no máximo 255 caracteres")
     String bio;
-    @NotNull
+    @NotNull(message = "Não pode ser nulo")
     Boolean isCrafter;
     @PositiveOrZero(message = "Deve ser maior ou igual a zero")
     BigDecimal wallet;

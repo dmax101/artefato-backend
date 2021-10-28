@@ -1,6 +1,8 @@
 package br.inatel.icc.idp.artefato.repository;
 
+import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,5 +31,10 @@ public interface ProductRepository extends Neo4jRepository<ProductEntity, UUID> 
     @Async
     @Query("MATCH (p:Product{id: $id}) RETURN p")
     Optional<ProductEntity> getProductById(UUID id);
+
+    @Async
+    @Query("MATCH (u:User{id: $idCrafter}) CREATE (p:Product {id: randomUUID(), name: $name, description: $description, price: $price, isAvailable: $isAvailable, imageURL: $imageURL}) CREATE (u)-[:CRAFTED{id: randomUUID(), since: localdatetime({timezone: 'America/Sao Paulo'})}]->(p) RETURN p;")
+    Optional<ProductEntity> createNewProduct(UUID idCrafter, String name, String description, BigDecimal price,
+            Boolean isAvailable, List<String> imageURL);
 
 }
