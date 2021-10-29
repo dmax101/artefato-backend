@@ -89,7 +89,7 @@ public class ProductService {
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(env.getProperty("artefato.consuming.url"))
                 .queryParam("chave", chave).queryParam("tipo", tipo).queryParam("nome", nome).queryParam("info", info)
-                .queryParam("valor", valor.toString());
+                .queryParam("valor", valor.doubleValue());
 
         log.info(builder.toString());
 
