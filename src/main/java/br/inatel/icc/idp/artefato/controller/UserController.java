@@ -191,10 +191,9 @@ public class UserController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<?> removeUserAndAllAssets(
-            @Pattern(regexp = "^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$", message = "Deve seguir o padrão de formatação UUID") String id) {
+    public ResponseEntity<?> removeUserAndAllAssets(String id) {
 
-        Optional<String> message = userRepository.removeUserAndAllAssets(id);
+        Optional<String> message = userRepository.removeUserAndAllAssets(UUID.fromString(id));
 
         if (message.isPresent()) {
 

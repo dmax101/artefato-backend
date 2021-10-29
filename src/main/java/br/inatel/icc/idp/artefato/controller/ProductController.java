@@ -13,9 +13,9 @@ import javax.validation.constraints.Size;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.data.util.Pair;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,7 +36,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/product")
-@CrossOrigin(origins = "http://localhost:4200")
 @Validated
 @Slf4j
 public class ProductController {
@@ -96,6 +95,13 @@ public class ProductController {
 
     @PostMapping("/purchase")
     public ResponseEntity<?> purchaseProduct(@RequestBody @Valid OrderDTO order) {
+
+        Optional<ProductEntity> product = productRepository.getProductById(order.getProductId());
+
+        if (product.isEmpty() || Boolean.TRUE.equals(!product.get().getIsAvailable())) {
+
+            return ResponseEntity.ok(new BasicMessageDTO(HttpStatus.OK.toString(), "O produto não está disponível!"));
+        }
 
         Pair<TicketDTO, BasicMessageDTO> paymentInfo = productService.getPaymentInfo(order);
 

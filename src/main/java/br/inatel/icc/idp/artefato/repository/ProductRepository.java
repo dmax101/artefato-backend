@@ -37,4 +37,8 @@ public interface ProductRepository extends Neo4jRepository<ProductEntity, UUID> 
     Optional<ProductEntity> createNewProduct(UUID idCrafter, String name, String description, BigDecimal price,
             Boolean isAvailable, List<String> imageURL);
 
+    @Async
+    @Query("MATCH (p:Product{id: $id}) SET p.isAvailable = $avaiability RETURN p.isAvailable")
+    Optional<Boolean> setProductAvaiability(UUID id, Boolean avaiability);
+
 }

@@ -50,8 +50,8 @@ public interface UserRepository extends Neo4jRepository<UserEntity, UUID> {
     Optional<UserEntity> getUserByIdAndNameAndEmail(UUID id, String name, String email);
 
     @Async
-    @Query("MATCH (user:User{id: $userId}) OPTIONAL MATCH (user)-[c:CRAFTED]->(product:Product) OPTIONAL MATCH (user)-[p:POSTED]->(post:Post) DETACH DELETE user, product, post RETURN $userId LIMIT 1")
-    Optional<String> removeUserAndAllAssets(String userId);
+    @Query("MATCH (user:User{id: $userId}) OPTIONAL MATCH (user)-[c:CRAFTED]->(product:Product) OPTIONAL MATCH (user)-[p:POSTED]->(post:Post) DETACH DELETE user, product, post RETURN $userId LIMIT 1;")
+    Optional<String> removeUserAndAllAssets(UUID userId);
 
     @Async
     @Query("MATCH (user:User)-[c:CRAFTED]->(product:Product{id: $productId}) RETURN user")
@@ -60,4 +60,12 @@ public interface UserRepository extends Neo4jRepository<UserEntity, UUID> {
     @Async
     @Query("MATCH (user:User)<-[f:FOLLOW]-(:User{id: $id}) RETURN user")
     Collection<UserEntity> getUserFollowers(UUID id);
+
+    @Async
+    @Query("MATCH (u:User{id: $id}) SET u.wallet = $wallet RETURN u.wallet")
+    Optional<BigDecimal> setNewWallet(UUID id, BigDecimal wallet);
+
+    @Async
+    @Query("MATCH (user:User {id: $userId}) MATCH (product:Product {id: $productId}) CREATE (user)-[b:BUYED{since: localdatetime({timezone: 'America/Sao Paulo'})}]->(product) RETURN true")
+    Optional<Boolean> setUserBuyedProduct(UUID userId, UUID productId);
 }

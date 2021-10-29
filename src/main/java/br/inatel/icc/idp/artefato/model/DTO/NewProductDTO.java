@@ -10,20 +10,22 @@ import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class NewProductDTO {
 
-    private final UUID idCrafter;
+    private UUID idCrafter;
     @NotNull(message = "Nome não pode ser nulo")
     @Size(min = 3, message = "Nome deve conter mais de 2 caracteres")
-    private final String name;
+    private String name;
     @Size(max = 255, message = "A Bio deve ter no máximo 255 caracteres")
-    private final String description;
+    private String description;
     @Positive(message = "Deve ser maior que zero")
-    private final BigDecimal price;
+    private BigDecimal price;
     @NotNull(message = "Não pode ser nulo")
-    private final Boolean isAvailable;
-    private final List<String> imageURL;
+    private Boolean isAvailable;
+    private List<String> imageURL;
 }
