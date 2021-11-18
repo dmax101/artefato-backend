@@ -55,4 +55,31 @@ public class UserEntity {
         }
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        if (this.name.equals(((UserEntity) obj).name) && this.email.equals(((UserEntity) obj).email)
+                && this.bio.equals(((UserEntity) obj).bio) && this.isCrafter.equals(((UserEntity) obj).isCrafter)
+                && this.wallet.equals(((UserEntity) obj).wallet)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 97 * hash + (this.name != null ? this.name.hashCode() : 0);
+        hash = 97 * hash + (this.email != null ? this.email.hashCode() : 0);
+        hash = 97 * hash + (this.bio != null ? this.bio.hashCode() : 0);
+        hash = 97 * hash + (this.isCrafter ? 1 : 0);
+        hash = 97 * hash + (this.wallet != null ? this.wallet.hashCode() : 0);
+        return hash;
+    }
 }
