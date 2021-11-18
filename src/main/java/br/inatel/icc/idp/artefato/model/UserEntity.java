@@ -57,19 +57,22 @@ public class UserEntity {
 
     @Override
     public boolean equals(Object obj) {
+
+        Boolean isEqual = false;
+
         if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        if (this.name.equals(((UserEntity) obj).name) && this.email.equals(((UserEntity) obj).email)
+            isEqual = false;
+        } else if (getClass() != obj.getClass()) {
+            isEqual = false;
+        } else if (this.name.equals(((UserEntity) obj).name) && this.email.equals(((UserEntity) obj).email)
                 && this.bio.equals(((UserEntity) obj).bio) && this.isCrafter.equals(((UserEntity) obj).isCrafter)
                 && this.wallet.equals(((UserEntity) obj).wallet)) {
-            return true;
+            isEqual = true;
         } else {
-            return false;
+            isEqual = false;
         }
+
+        return isEqual;
     }
 
     @Override
